@@ -1,0 +1,18 @@
+.login-wrapper {
+  background: #f0f2f5;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  background-color: #ffffff;
+}
+
+.login-card input,
+.login-card button {
+  font-size: 16px;
+}
+
+.login-card h4 {
+  font-weight: 600;
+}

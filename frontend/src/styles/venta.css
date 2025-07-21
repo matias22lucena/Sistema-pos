@@ -1,0 +1,27 @@
+.card {
+  border-radius: 12px;
+  border: none;
+  background-color: #fff;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+}
+
+input.form-control {
+  font-size: 15px;
+}
+
+.badge {
+  font-size: 13px;
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+}
+
+.btn-primary {
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  font-size: 15px;
+}
+
+h6 {
+  font-weight: 600;
+  font-size: 15px;
+}

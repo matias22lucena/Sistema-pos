@@ -1,0 +1,18 @@
+.register-wrapper {
+  background-color: #f0f2f5;
+}
+
+.register-card {
+  width: 100%;
+  max-width: 400px;
+  background-color: #ffffff;
+}
+
+.register-card input,
+.register-card button {
+  font-size: 16px;
+}
+
+.register-card h4 {
+  font-weight: 600;
+}

@@ -1,0 +1,88 @@
+/* Reset visual */
+body {
+  background-color: #f6f8fc;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Cards métricas */
+.card.metric-card {
+  background-color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  padding: 1rem;
+  text-align: center;
+}
+
+.metric-card h6 {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 0.25rem;
+}
+
+.metric-card h4,
+.metric-card h5 {
+  font-weight: 700;
+  font-size: 24px;
+  margin: 0;
+}
+
+.metric-card small {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+/* Acciones rápidas */
+.card.actions {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.actions .btn {
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 0.75rem;
+}
+
+/* Alertas */
+.alert {
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.alert-warning {
+  background-color: #fff9db;
+  color: #8a6d3b;
+}
+
+.alert-success {
+  background-color: #e6f4ea;
+  color: #2e7d32;
+}
+
+.alert-primary {
+  background-color: #e3f2fd;
+  color: #0d47a1;
+}
+
+/* Título e icono */
+h2 {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.bi {
+  font-size: 20px;
+  margin-right: 6px;
+}
+
+/* Etiqueta caja */
+.badge {
+  font-size: 13px;
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+}
