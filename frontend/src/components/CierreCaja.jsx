@@ -29,30 +29,38 @@ function CierreCaja({ volverAHome }) {
 
   useEffect(() => {
     fetchData();
-
     const timer = setInterval(() => {
       setHoraActual(new Date().toLocaleTimeString("es-AR", { hour12: false }));
     }, 1000);
-
     return () => clearInterval(timer);
   }, []);
 
   if (!resumen || !estadoCaja) return <div>Cargando datos...</div>;
 
-  const diferencia = (efectivoContado - resumen.total_efectivo).toFixed(2);
-  const totalGeneral = resumen.total_general.toFixed(2);
+  const efectivo = Number(resumen.total_efectivo) || 0;
+  const tarjeta = Number(resumen.total_tarjeta) || 0;
+  const total = Number(resumen.total_general) || 0;
+  const promedio = Number(resumen.ticket_promedio) || 0;
+  const diferencia = (efectivoContado - efectivo).toFixed(2);
+  const totalGeneral = total.toFixed(2);
 
   const realizarCierre = async () => {
     try {
       setLoading(true);
       const res = await axios.post("http://localhost:3001/api/cierre-caja/cierre-caja", {
-        total_efectivo: resumen.total_efectivo,
-        total_tarjeta: resumen.total_tarjeta,
-        total_general: resumen.total_general,
+        total_efectivo: efectivo,
+        total_tarjeta: tarjeta,
+        total_general: total,
         observaciones: `Efectivo contado: ${efectivoContado}, Diferencia: ${diferencia}`,
       });
-      alert(res.data.mensaje || "Cierre realizado correctamente.");
-      await fetchData(); // Recarga estado actualizado
+
+      if (res.data.mensaje?.toLowerCase().includes("ya existía un cierre")) {
+        alert("⚠️ Cierre realizado. Ya existía un cierre anterior hoy.");
+      } else {
+        alert(res.data.mensaje || "Cierre realizado correctamente.");
+      }
+
+      await fetchData();
     } catch (err) {
       alert(err?.response?.data?.error || "Error al realizar el cierre.");
       console.error(err);
@@ -68,11 +76,22 @@ function CierreCaja({ volverAHome }) {
         saldo_inicial: parseFloat(saldo),
       });
       alert(res.data.mensaje);
-      await fetchData(); // Recarga estado
+      await fetchData();
     } catch (err) {
       alert("Error al reabrir la caja.");
       console.error(err);
     }
+  };
+
+  const descargarExcel = () => {
+    const link = document.createElement("a");
+    link.href = "http://localhost:3001/api/cierre-caja/descargar-excel";
+    link.download = "cierre_caja.xlsx";
+    link.click();
+  };
+
+  const descargarPDF = () => {
+    window.open("http://localhost:3001/api/cierre-caja/descargar-pdf", "_blank");
   };
 
   return (
@@ -83,9 +102,20 @@ function CierreCaja({ volverAHome }) {
           <span>Volver</span>
         </div>
         <h2><BiTrendingUp /> Cierre de Caja</h2>
-        <div className="estado-caja">
-          {estadoCaja.estado === "cerrada" ? "Caja Cerrada" : "Caja Abierta"}
-        </div>
+        <div
+  className="estado-caja"
+  style={{
+    backgroundColor: estadoCaja.estado === "cerrada" ? "#f44336" : "#4caf50",
+    color: "#fff",
+    padding: "5px 10px",
+    borderRadius: "8px",
+    fontWeight: "bold",
+    textAlign: "center"
+  }}
+>
+  {estadoCaja.estado === "cerrada" ? "Caja Cerrada" : "Caja Abierta"}
+</div>
+
       </div>
 
       <div className="contenido-cierre">
@@ -94,11 +124,11 @@ function CierreCaja({ volverAHome }) {
           <div className="tarjetas-resumen">
             <div className="tarjeta tarjeta-contado">
               <p>Contado</p>
-              <h3>${resumen.total_efectivo}</h3>
+              <h3>${efectivo}</h3>
             </div>
             <div className="tarjeta tarjeta-tarjeta">
               <p>Tarjeta</p>
-              <h3>${resumen.total_tarjeta}</h3>
+              <h3>${tarjeta}</h3>
             </div>
             <div className="tarjeta tarjeta-facturas">
               <p>Facturas</p>
@@ -106,7 +136,7 @@ function CierreCaja({ volverAHome }) {
             </div>
             <div className="tarjeta tarjeta-promedio">
               <p>Promedio</p>
-              <h3>${resumen.ticket_promedio}</h3>
+              <h3>${promedio}</h3>
             </div>
           </div>
           <div className="total-general">
@@ -122,7 +152,7 @@ function CierreCaja({ volverAHome }) {
             value={efectivoContado}
             onChange={(e) => setEfectivoContado(parseFloat(e.target.value) || 0)}
           />
-          <p>Ventas en Efectivo: <strong>${resumen.total_efectivo}</strong></p>
+          <p>Ventas en Efectivo: <strong>${efectivo}</strong></p>
           <p>Efectivo Contado: <strong>${efectivoContado}</strong></p>
           <p className="diferencia">
             Diferencia: <strong style={{ color: "red" }}>{diferencia}</strong>
@@ -130,7 +160,7 @@ function CierreCaja({ volverAHome }) {
           <hr />
           <h5>Resumen Final</h5>
           <p>Efectivo en caja: ${efectivoContado}</p>
-          <p>Ventas con tarjeta: ${resumen.total_tarjeta}</p>
+          <p>Ventas con tarjeta: ${tarjeta}</p>
           <p><strong>Total del día:</strong> ${totalGeneral}</p>
 
           <button
@@ -141,9 +171,19 @@ function CierreCaja({ volverAHome }) {
           </button>
 
           {estadoCaja.estado === "cerrada" && (
-            <button onClick={reabrirCaja} style={{ marginTop: "10px", backgroundColor: "#555" }}>
-              Reabrir Caja
-            </button>
+            <>
+              <button onClick={reabrirCaja} style={{ marginTop: "10px", backgroundColor: "#555" }}>
+                Reabrir Caja
+              </button>
+
+              <button onClick={descargarExcel} style={{ marginTop: "10px", backgroundColor: "#4caf50", color: "#fff" }}>
+                Descargar Excel
+              </button>
+
+              <button onClick={descargarPDF} style={{ marginTop: "10px", backgroundColor: "#2196f3", color: "#fff" }}>
+                Descargar PDF
+              </button>
+            </>
           )}
         </div>
       </div>
@@ -178,7 +218,7 @@ function CierreCaja({ volverAHome }) {
         <div className="info-adicional">
           <h4>Información Adicional</h4>
           <p>Productos vendidos: {resumen.total_productos}</p>
-          <p>Ticket promedio: ${resumen.ticket_promedio}</p>
+          <p>Ticket promedio: ${promedio}</p>
           <p>Hora de apertura: {estadoCaja?.creado_en?.split("T")[1]?.slice(0, 5) || "00:00"}</p>
           <p>Hora actual: {horaActual}</p>
         </div>

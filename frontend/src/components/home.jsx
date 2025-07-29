@@ -60,7 +60,9 @@ const Home = ({ usuario, onLogout }) => {
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2><i className="bi bi-cart3 me-2"></i> Sistema POS</h2>
         <div>
-          <span className="badge bg-success me-2">Caja Abierta</span>
+<span className={`badge me-2 ${data.estado_caja === 'abierta' ? 'bg-success' : 'bg-danger'}`}>
+  {data.estado_caja === 'abierta' ? 'Caja Abierta' : 'Caja Cerrada'}
+</span>
           <button className="btn btn-outline-dark" onClick={onLogout}>Cerrar Sesión</button>
         </div>
       </div>

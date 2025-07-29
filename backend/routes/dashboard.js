@@ -39,6 +39,11 @@ router.get("/", async (req, res) => {
       SELECT COUNT(*) AS total FROM notas_credito WHERE motivo IS NULL OR motivo = ''
     `);
 
+    // Estado de la caja (modificación agregada)
+    const [estadoCaja] = await db.query(`
+      SELECT estado FROM estado_caja WHERE fecha = CURDATE()
+    `);
+
     // Porcentaje de cambio respecto a ayer
     const hoy = ventasHoy[0].total_ventas || 0;
     const ayer = ventasAyer[0].total || 0;
@@ -61,7 +66,8 @@ router.get("/", async (req, res) => {
         restante: restante.toFixed(2),
         meta: meta
       },
-      notas_pendientes: notasPendientes[0].total
+      notas_pendientes: notasPendientes[0].total,
+      estado_caja: estadoCaja[0]?.estado || 'desconocido'  // <- agregado
     });
   } catch (err) {
     console.error("Error en dashboard:", err);
