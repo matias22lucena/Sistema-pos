@@ -6,7 +6,9 @@ import Registro from "./components/registro";
 import Home from "./components/home";
 import GestionProductos from "./components/gestionproductos";
 import NuevaVenta from "./components/NuevaVenta";
-import ListaPrecios from "./components/ListaPrecios"; // ✅ nueva importación
+import ListaPrecios from "./components/ListaPrecios";
+import HistorialVentas from "./components/HistorialVentas";
+import CierreCaja from "./components/CierreCaja"; // ✅ renombrado correctamente
 
 function App() {
   const [usuario, setUsuario] = useState(null);
@@ -80,6 +82,14 @@ function App() {
         <Route
           path="/listas-precios"
           element={usuario ? <ListaPrecios volverAHome={volverAHome} /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/ventas"
+          element={usuario ? <HistorialVentas volverAHome={volverAHome} /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/caja"
+          element={usuario ? <CierreCaja volverAHome={volverAHome} /> : <Navigate to="/" />}
         />
       </Routes>
     </Router>

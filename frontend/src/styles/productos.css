@@ -1,8 +1,12 @@
+/* Contenedor principal */
 .contenedor-productos {
   padding: 20px;
-  background: #f9f9f9;
+  background: transparent;
+  position: relative;
+  z-index: 0;
 }
 
+/* Título */
 .titulo {
   display: flex;
   justify-content: space-between;
@@ -10,6 +14,7 @@
   margin-bottom: 20px;
 }
 
+/* Tarjetas resumen */
 .resumen {
   display: flex;
   gap: 2rem;
@@ -22,6 +27,7 @@
   box-shadow: 0 0 5px #ccc;
 }
 
+/* Alerta stock bajo */
 .alerta-stock {
   background: #fff3cd;
   border-left: 6px solid #ffc107;
@@ -30,6 +36,7 @@
   border-radius: 8px;
 }
 
+/* Lista de productos con bajo stock */
 .lista-bajos {
   display: flex;
   gap: 20px;
@@ -45,6 +52,7 @@
   min-width: 200px;
 }
 
+/* Tabla de productos */
 .tabla-productos {
   background: white;
   padding: 20px;
@@ -52,10 +60,72 @@
   box-shadow: 0 0 5px #ccc;
 }
 
-.form-nuevo-producto {
+/* Buscador */
+.buscador-productos {
+  max-width: 250px;
+  margin-left: auto;
+  margin-bottom: 10px;
+  cursor: text;
+}
+
+/* Inputs */
+.form-nuevo-producto input,
+.modal-formulario input {
+  cursor: text;
+}
+
+/* Botón flotante de agregar */
+.boton-flotante {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  font-size: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  background-color: #F2E2B1;
+  color: white;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* Fondo modal difuminado */
+.fondo-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(8px);
+  background-color: rgba(0, 0, 0, 0.2); /* translúcido */
+  z-index: 1000;
+}
+
+
+.modal-formulario {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background: white;
-  padding: 15px;
+  padding: 30px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 500px;
+  z-index: 1001;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+
+.modal-formulario h5 {
   margin-bottom: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 5px #ccc;
+  font-weight: bold;
+}
+
+.modal-formulario input {
+  margin-bottom: 15px;
 }

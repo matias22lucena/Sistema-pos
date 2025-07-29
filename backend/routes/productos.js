@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db');
 
-// ✅ Listar todos los productos
+// ✅ Listar todos los productos activos
 router.get('/', async (req, res) => {
   try {
     const [rows] = await db.query('SELECT * FROM productos');
@@ -47,7 +47,7 @@ router.post('/', async (req, res) => {
       [codigo, nombre, descripcion, precio_base, stock, stock_minimo]
     );
 
-    // ✅ AGREGADO: Precio de venta con margen predeterminado
+    // ✅ Precio de venta con margen predeterminado
     const margen = 30;
     const precio_venta = parseFloat(precio_base) * (1 + margen / 100);
     await db.query(
@@ -86,6 +86,36 @@ router.put('/:id/margen', async (req, res) => {
     res.json({ success: true, message: 'Precio de venta actualizado correctamente' });
   } catch (err) {
     console.error("Error actualizando precio venta:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ✅ Editar producto completo (sin 'marca')
+router.put('/:id', async (req, res) => {
+  const { id } = req.params;
+  const { codigo, nombre, precio_base, stock, stock_minimo } = req.body;
+
+  try {
+    await db.query(
+      `UPDATE productos SET codigo = ?, nombre = ?, precio_base = ?, stock = ?, stock_minimo = ? WHERE id = ?`,
+      [codigo, nombre, precio_base, stock, stock_minimo, id]
+    );
+    res.json({ success: true, message: 'Producto actualizado correctamente' });
+  } catch (err) {
+    console.error("Error al actualizar producto:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ✅ Eliminar producto
+router.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    await db.query('DELETE FROM productos WHERE id = ?', [id]);
+    res.json({ success: true, message: 'Producto eliminado correctamente' });
+  } catch (err) {
+    console.error("Error al eliminar producto:", err);
     res.status(500).json({ error: err.message });
   }
 });

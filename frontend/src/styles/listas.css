@@ -1,23 +1,58 @@
 .contenedor-listas {
   padding: 20px;
-  background-color: #f8f9fa;
+  background: #f9f9f9;
 }
 
-.edicion-panel {
-  animation: fadeIn 0.2s ease-in-out;
+.titulo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.buscador-productos {
+  max-width: 250px;
+  margin-left: auto;
+  cursor: text;
+}
+
+.tabla-productos {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 5px #ccc;
 }
 
 .fila-edicion td {
   background-color: #eef1f7 !important;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scaleY(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scaleY(1);
-  }
+/* ✅ Fondo desenfocado y centrado para modal */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(1px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-contenido {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 1000;
+}
+
+.modal-formulario input {
+  cursor: text;
 }
